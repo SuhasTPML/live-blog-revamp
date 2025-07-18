@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertical Timeline - Live Updates</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .timeline-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .timeline-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+        .sort-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sort-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .sort-dropdown {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+            background: white;
+            cursor: pointer;
+            min-width: 160px;
+        }
+
+        /* Vertical Timeline */
+        .vertical-timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .vertical-timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #2563eb, #e5e7eb);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -22px;
+            top: 20px;
+            width: 16px;
+            height: 16px;
+            background: #2563eb;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 3px #e5e7eb;
+            z-index: 2;
+        }
+
+        .timeline-item.key-update::before {
+            background: #dc2626;
+            box-shadow: 0 0 0 3px #fee2e2;
+        }
+
+        .timeline-time {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .time-badge {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .date-badge {
+            background: linear-gradient(135deg, #64748b, #475569);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .key-update .time-badge {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+        }
+
+        .key-update .date-badge {
+            background: linear-gradient(135deg, #7f1d1d, #991b1b);
+        }
+
+        .timeline-content h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .timeline-content p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #4b5563;
+            margin-bottom: 0;
+        }
+
+        .key-update-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 12px;
+        }
+
+        .key-update-badge::before {
+            content: '★';
+            font-size: 12px;
+        }
+
+        .update-image {
+            width: 100%;
+            height: 200px;
+            background-color: #f3f4f6;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><rect width="400" height="200" fill="%23f3f4f6"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="%23999" font-family="Arial" font-size="16">Update Image Placeholder</text></svg>');
+            background-size: cover;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .expanded-content {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e5e7eb;
+            background-color: #f9fafb;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .expanded-content p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+            margin: 0;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .timeline-container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .timeline-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .timeline-title {
+                font-size: 20px;
+            }
+
+            .sort-control {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .sort-dropdown {
+                min-width: 140px;
+                font-size: 13px;
+            }
+
+            .vertical-timeline {
+                padding-left: 25px;
+            }
+
+            .vertical-timeline::before {
+                left: 15px;
+            }
+
+            .timeline-item {
+                padding: 20px;
+                margin-bottom: 30px;
+            }
+
+            .timeline-item::before {
+                left: -21px;
+                width: 14px;
+                height: 14px;
+                top: 18px;
+            }
+
+            .timeline-content h3 {
+                font-size: 16px;
+            }
+
+            .timeline-content p {
+                font-size: 14px;
+            }
+
+            .time-badge, .date-badge {
+                font-size: 11px;
+                padding: 5px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timeline-container {
+                padding: 15px;
+            }
+
+            .timeline-title {
+                font-size: 18px;
+            }
+
+            .timeline-content h3 {
+                font-size: 15px;
+            }
+
+            .timeline-content p {
+                font-size: 13px;
+            }
+
+            .sort-dropdown {
+                min-width: 120px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="timeline-container">
+        <div class="timeline-header">
+            <h2 class="timeline-title">Live Updates Timeline</h2>
+            <div class="sort-control">
+                <label class="sort-label" for="sortSelect">Sort by:</label>
+                <select id="sortSelect" class="sort-dropdown">
+                    <option value="latest">Latest update first</option>
+                    <option value="chronological">Chronological</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="vertical-timeline" id="timelineContainer">
+            <div class="timeline-item key-update" data-time="16:46" data-sort-time="1646">
+                <div class="timeline-time">
+                    <div class="time-badge">04:46 PM</div>
+                    <div class="date-badge">Jul 18, 2025</div>
+                </div>
+                <div class="timeline-content">
+                    <h3>West Asia Tensions LIVE | Iran says no plan for new US nuclear talks</h3>
+                    <p>Iran says it has no plan for new nuclear negotiations with the United States amid claimed move for bolstering the deal, and even diluted the reforms when it seemed to if the fragile order might not hold. Meanwhile, reports suggest that the US...</p>
+                    <div class="key-update-badge">Key Update</div>
+                </div>
+            </div>
+
+            <div class="timeline-item key-update" data-time="16:37" data-sort-time="1637">
+                <div class="timeline-time">
+                    <div class="time-badge">04:37 PM</div>
+                    <div class="date-badge">Jul 18, 2025</div>
+                </div>
+                <div class="timeline-content">
+                    <h3>West Asia Tensions LIVE | A planned loss from an armaments future also to grounding new low future</h3>
+                    <p>Reports from government ministries suggest a possible standoff brewing in the region as diplomatic channels remain under pressure.</p>
+                    <div class="key-update-badge">Key Update</div>
+                </div>
+            </div>
+
+            <div class="timeline-item key-update" data-time="16:32" data-sort-time="1632">
+                <div class="timeline-time">
+                    <div class="time-badge">04:32 PM</div>
+                    <div class="date-badge">Jul 18, 2025</div>
+                </div>
+                <div class="timeline-content">
+                    <h3>West Asia Tensions LIVE | US people arrested in Iran over collaborating with strike teams</h3>
+                    <p>Iran media reports suggest multiple arrests have been made in connection with alleged strike operations.</p>
+                    <div class="key-update-badge">Key Update</div>
+                </div>
+            </div>
+
+            <div class="timeline-item key-update" data-time="16:20" data-sort-time="1620">
+                <div class="timeline-time">
+                    <div class="time-badge">04:20 PM</div>
+                    <div class="date-badge">Jul 18, 2025</div>
+                </div>
+                <div class="timeline-content">
+                    <h3>West Asia Tensions LIVE | Prominent Indian nationals from Iraq, forced to travel back</h3>
+                    <p>Reports indicate several Indian nationals have been evacuated from Iraq following escalating security concerns.</p>
+                    <div class="key-update-badge">Key Update</div>
+                    <div class="update-image"></div>
+                    <div class="expanded-content">
+                        <p>Indian embassy sources confirm that prominent Indian nationals working in Iraq have been safely evacuated following escalating security concerns. The evacuation was coordinated with local authorities and represents a precautionary measure amid regional instability affecting civilian populations.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-time="16:15" data-sort-time="1615">
+                <div class="timeline-time">
+                    <div class="time-badge">04:15 PM</div>
+                    <div class="date-badge">Jul 18, 2025</div>
+                </div>
+                <div class="timeline-content">
+                    <h3>West Asia Tensions LIVE | Iran announces new framework for nuclear talks</h3>
+                    <p>Iranian officials outline revised approach to nuclear talks with specific pre-conditions.</p>
+                    <div class="expanded-content">
+                        <p>Senior Iranian diplomats have presented a new framework for potential nuclear negotiations, emphasizing pre-conditions and guarantees before any formal talks can commence. The proposal includes specific demands for sanctions relief and security assurances from Western powers.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-time="16:10" data-sort-time="1610">
+                <div class="timeline-time">
+                    <div class="time-badge">04:10 PM</div>
+                    <div class="date-badge">Jul 17, 2025</div>
+                </div>
+                <div class="timeline-content">
+                    <h3>West Asia Tensions LIVE | Iran reiterates nuclear stance</h3>
+                    <p>Officials maintain consistent position on nuclear program development rights.</p>
+                    <div class="expanded-content">
+                        <p>Iranian leadership has reiterated their firm stance on nuclear development rights, emphasizing that any international agreements must respect Iran's sovereignty and technological advancement capabilities. The statement comes as international pressure continues to mount from various diplomatic channels.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-time="16:05" data-sort-time="1605">
+                <div class="timeline-time">
+                    <div class="time-badge">04:05 PM</div>
+                    <div class="date-badge">Jul 17, 2025</div>
+                </div>
+                <div class="timeline-content">
+                    <h3>West Asia Tensions LIVE | Iran-IAEA cooperation update</h3>
+                    <p>New developments in Iran's cooperation with nuclear watchdog agency.</p>
+                    <div class="expanded-content">
+                        <p>The International Atomic Energy Agency has received updated commitments from Iran regarding inspection protocols and monitoring access to nuclear facilities. However, implementation details remain under negotiation, with both sides working to establish mutually acceptable terms for enhanced cooperation.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-time="15:58" data-sort-time="1558">
+                <div class="timeline-time">
+                    <div class="time-badge">03:58 PM</div>
+                    <div class="date-badge">Jul 17, 2025</div>
+                </div>
+                <div class="timeline-content">
+                    <h3>West Asia Tensions LIVE | Regional damage assessment</h3>
+                    <p>Iran urges assessment of regional damage from ongoing conflicts.</p>
+                    <div class="expanded-content">
+                        <p>Iranian foreign ministry officials have called for a comprehensive assessment of regional damage caused by ongoing conflicts, citing humanitarian concerns and economic disruption across West Asia. The statement emphasizes the need for coordinated international response to address civilian casualties and infrastructure damage.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function initializeSorting() {
+            const sortSelect = document.getElementById('sortSelect');
+            const timelineContainer = document.getElementById('timelineContainer');
+            
+            sortSelect.addEventListener('change', function() {
+                const sortType = this.value;
+                const timelineItems = Array.from(timelineContainer.querySelectorAll('.timeline-item'));
+                
+                // Sort the items based on selection
+                timelineItems.sort((a, b) => {
+                    const timeA = parseInt(a.getAttribute('data-sort-time'));
+                    const timeB = parseInt(b.getAttribute('data-sort-time'));
+                    
+                    if (sortType === 'latest') {
+                        // Latest first (descending order)
+                        return timeB - timeA;
+                    } else {
+                        // Chronological (ascending order)
+                        return timeA - timeB;
+                    }
+                });
+                
+                // Clear container and re-append sorted items
+                timelineContainer.innerHTML = '';
+                timelineItems.forEach(item => {
+                    timelineContainer.appendChild(item);
+                });
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSorting();
+        });
+    </script>
+</body>
+</html>

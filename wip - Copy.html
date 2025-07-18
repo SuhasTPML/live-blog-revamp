@@ -237,105 +237,50 @@
             box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
         }
         
-        /* Live blog updates - Vertical Timeline Style */
+        /* Live blog updates */
         .live-updates {
             padding: 0 20px 20px;
-            position: relative;
-            padding-left: 40px;
-        }
-
-        .live-updates::before {
-            content: '';
-            position: absolute;
-            left: 20px;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: linear-gradient(to bottom, #2563eb, #e5e7eb);
         }
 
         .update-item {
+            border-left: 3px solid #0891b2;
+            margin-bottom: 30px;
+            padding-left: 20px;
             position: relative;
-            margin-bottom: 40px;
-            margin-left: 20px;
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border: 1px solid #f1f5f9;
-            transition: all 0.3s ease;
-        }
-
-        .update-item:hover {
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-            transform: translateY(-2px);
-        }
-
-        .update-item::before {
-            content: '';
-            position: absolute;
-            left: -55px;
-            top: 20px;
-            width: 16px;
-            height: 16px;
-            background: #2563eb;
-            border-radius: 50%;
-            border: 4px solid white;
-            box-shadow: 0 0 0 3px #e5e7eb;
-            z-index: 2;
-        }
-
-        .update-item.key-update::before {
-            background: #dc2626;
-            box-shadow: 0 0 0 3px #fee2e2;
         }
 
         .update-time {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            background-color: #0891b2;
             color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
             display: inline-block;
-            margin-bottom: 0;
-            margin-right: 10px;
+            margin-bottom: 5px;
         }
         
         .update-date {
-            background: linear-gradient(135deg, #64748b, #475569);
+            background-color: #0891b2;
             color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
             display: inline-block;
-            margin-bottom: 12px;
-            margin-left: 0;
-        }
-
-        .key-update .update-time {
-            background: linear-gradient(135deg, #dc2626, #b91c1c);
-        }
-
-        .key-update .update-date {
-            background: linear-gradient(135deg, #7f1d1d, #991b1b);
+            margin-bottom: 10px;
+            margin-left: 5px;
         }
 
         .update-content {
-            font-size: 15px;
+            font-size: 14px;
             line-height: 1.6;
         }
 
         .update-content h3 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 12px;
-            line-height: 1.4;
-            margin-top: 12px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #333;
         }
 
         .update-image {
@@ -584,44 +529,31 @@
 
         /* Enhanced Live Updates */
         .key-update {
-            background-color: white; 
-    border: 3px solid #dc2626;
+            background-color: #f8f9fa;
+            border-left: 4px solid #dc2626;
         }
 
         .key-update-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            background-color: #dc2626;
             color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 12px;
-        }
-
-        .key-update-badge::before {
-            content: '★';
-            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
         }
 
         .expanded-content {
             margin-top: 15px;
             padding-top: 15px;
-            border-top: 1px solid #e5e7eb;
-            background-color: #f9fafb;
-            border-radius: 8px;
-            padding: 15px;
+            border-top: 1px solid #eee;
         }
 
         .expanded-content p {
             font-size: 14px;
             line-height: 1.6;
             color: #555;
-            margin: 0;
         }
 
         /* Full text transitions */
@@ -708,40 +640,6 @@
                 padding: 15px 15px 0;
             }
             
-            .live-updates {
-                padding-left: 35px;
-            }
-            
-            .live-updates::before {
-                left: 18px;
-            }
-            
-            .update-item {
-                padding: 20px;
-                margin-bottom: 30px;
-                margin-left: 18px;
-            }
-            
-            .update-item::before {
-                left: -45.5px;
-                width: 14px;
-                height: 14px;
-                top: 18px;
-            }
-            
-            .update-content h3 {
-                font-size: 16px;
-            }
-            
-            .update-content {
-                font-size: 14px;
-            }
-            
-            .update-time, .update-date {
-                font-size: 11px;
-                padding: 5px 10px;
-            }
-            
             .sort-control {
                 width: 100%;
                 justify-content: flex-end;
@@ -792,36 +690,18 @@
                 font-size: 12px;
             }
 
-            .live-updates {
-                padding-left: 30px;
-            }
-            
-            .live-updates::before {
-                left: 15px;
-            }
-            
-            .update-item {
-                padding: 15px;
-                margin-left: 15px;
-            }
-            
-            .update-item::before {
-                left: -42.5px;
-                width: 12px;
-                height: 12px;
-            }
-            
-            .update-content h3 {
-                font-size: 15px;
-            }
-            
-            .update-content {
-                font-size: 13px;
-            }
-            
-            .update-time, .update-date {
+            .update-time {
                 font-size: 10px;
                 padding: 4px 8px;
+            }
+            
+            .update-date {
+                font-size: 10px;
+                padding: 4px 8px;
+            }
+
+            .update-content {
+                font-size: 13px;
             }
 
             .related-content h4 {
@@ -901,7 +781,7 @@
         <main class="main-content">
             <!-- Breadcrumb -->
             <div class="breadcrumb">
-                <a href="#">Home</a> > <a href="#">National</a>
+                <a href="#">Home</a> > <a href="#">National</a> > <a href="#">West Asia Tensions</a> > <span>Iran says no plan for new US nuclear talks</span>
             </div>
 
             <!-- Article Header -->
