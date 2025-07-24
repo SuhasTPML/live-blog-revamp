@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;800&display=swap" rel="stylesheet">
+    <title>LIVE Badge Animations</title>
+    <style>
+        :root {
+            --live-red: #e40a0a;
+            --primary-font: "Roboto", "Arial", "Helvetica", sans-serif;
+        }
+
+        body {
+            font-family: var(--primary-font);
+            background-color: #f0f2f5;
+            padding: 40px;
+            color: #1d2129;
+        }
+
+        .demo-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .demo-item {
+            margin-bottom: 35px;
+        }
+
+        .demo-item h3 {
+            margin: 0 0 10px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #333;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 8px;
+        }
+        
+        .news-headline {
+            font-size: 22px;
+            font-weight: 700;
+            color: #191b1d;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+        }
+
+        /* --- Base Badge Styles (Semantic Classes) --- */
+        .live-badge-wrapper {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 8px;
+            position: relative;
+            top: -1px;
+        }
+
+        .live-badge {
+            background-color: var(--live-red);
+            border-radius: 4px;
+            height: 24px;
+            padding: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            color: white;
+        }
+        
+        .live-badge span {
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            line-height: 1;
+        }
+        
+        .live-dot {
+            /* Dot size has been increased */
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%;
+            /* Spacing adjusted for larger dot */
+            margin-right: 8px; 
+            position: relative;
+        }
+
+        /* --- Animation 1: Dot Pulse (Original, Refined) --- */
+        @keyframes dotPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(0.85);
+            }
+        }
+        .live-badge--pulse .live-dot {
+            animation: dotPulse 1.5s ease-in-out infinite;
+        }
+
+        /* --- Animation 2: Broadcast/Radar Pulse --- */
+        @keyframes radarPulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
+        .live-badge--radar .live-dot::before,
+        .live-badge--radar .live-dot::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            border-radius: 50%;
+            animation: radarPulse 2s infinite;
+        }
+        /* Delay the second pulse for a better effect */
+        .live-badge--radar .live-dot::after {
+            animation-delay: 1s;
+        }
+        
+        /* --- Animation 3: Classic Blinking Dot --- */
+        @keyframes dotBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+        .live-badge--blink .live-dot {
+            animation: dotBlink 1.2s step-end infinite;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation Link -->
+    <div style="text-align: center; padding: 10px; background: #f8f9fa; border-bottom: 1px solid #eee;">
+        <a href="index.html" style="color: #0891b2; text-decoration: none; font-size: 14px;">← Back to Live Blog</a>
+    </div>
+
+    <div class="demo-container">
+
+        <div class="demo-item">
+            <h3>1. Dot Pulse</h3>
+            <div class="news-headline">
+                <div class="live-badge-wrapper">
+                    <div class="live-badge live-badge--pulse">
+                        <div class="live-dot"></div>
+                        <span>LIVE</span>
+                    </div>
+                </div>
+                <span>Tensions in West Asia Continue to Escalate</span>
+            </div>
+        </div>
+
+        <div class="demo-item">
+            <h3>2. Broadcast/Radar Pulse</h3>
+            <div class="news-headline">
+                <div class="live-badge-wrapper">
+                    <div class="live-badge live-badge--radar">
+                        <div class="live-dot"></div>
+                        <span>LIVE</span>
+                    </div>
+                </div>
+                <span>Global Markets React to Ongoing Diplomatic Talks</span>
+            </div>
+        </div>
+
+        <div class="demo-item">
+            <h3>3. Classic Blinking Dot</h3>
+            <div class="news-headline">
+                <div class="live-badge-wrapper">
+                    <div class="live-badge live-badge--blink">
+                        <div class="live-dot"></div>
+                        <span>LIVE</span>
+                    </div>
+                </div>
+                <span>Emergency Services Respond to Developing Situation</span>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
